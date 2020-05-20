@@ -36,6 +36,18 @@ export default class App extends React.Component {
       })
   }
 
+  handleRemoveList = (e, id) => {
+    e.preventDefault();
+    axios.delete('/list/' + id)
+      .then(res => {
+        console.log('List to remove', res);
+        this.setState({ data: this.state.data.filter(x => id !== x.id) });
+      })
+      .catch(err => {
+        console.log('Error by removing list', err);
+      })
+  }
+
   onChange = (e) => {
     this.setState({ name: e.target.value });
   }
@@ -46,7 +58,7 @@ export default class App extends React.Component {
       return (
         <div className="list__box" key={id}>
           <h5>{name}</h5>
-         <span><GoTrashcan/></span> 
+          <span onClick={(e) => { this.handleRemoveList(e, id) }}><GoTrashcan/></span>
           <div className="list__items">
             {/*here later:render listitems/cards */}
           </div>
