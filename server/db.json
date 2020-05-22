@@ -1,1 +1,28 @@
-[{"name":"test list","id":"test-123-test-456","listitems":[{"itemname":"test item"}]},{"name":"whatever","id":"bd387f5e-5e26-4a9d-aec5-d6483e9c8740","listitems":[]},{"name":"Yeay","id":"8cfd594e-f2c5-4702-a9e3-22b5e6537f15","listitems":[]}]
+[
+    {
+        "name": "test list",
+        "id": "test-123-test-456",
+        "listitems": [
+            {
+                "itemname": "test item 1",
+                "item_id": "test-987-test-654",
+                "description": "test test",
+                "timestamp": "2020-05-20 15:41 test"
+            },
+            {
+                "itemname": "another test item",
+                "item_id": "test-398-test-365",
+                "description": "another test",
+                "timestamp": "2020-05-20 15:42 test"
+            }
+        ]
+    },
+    {
+        "name": "whatever",
+        "id": "bd387f5e-5e26-4a9d-aec5-d6483e9c8740"
+    },
+    {
+        "name": "Yeay",
+        "id": "8cfd594e-f2c5-4702-a9e3-22b5e6537f15"
+    }
+]

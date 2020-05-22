@@ -40,7 +40,7 @@ export default class App extends React.Component {
     e.preventDefault();
     axios.delete('/list/' + id)
       .then(res => {
-        console.log('List to remove', res);
+        console.log('List to REMOVE', res);
         this.setState({ data: this.state.data.filter(x => id !== x.id) });
       })
       .catch(err => {

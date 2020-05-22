@@ -6,6 +6,7 @@ const uuid = require('uuid');
 
 
 let DB_PATH = require('./db.json');
+let ITEM_DB_PATH= require('./itemDb.json');
 
 app.use(express.json());
 
@@ -21,7 +22,7 @@ app.use((req, res, next) => {
 });
 
 
-//-----------------LIST:  route:  /list------------------------------
+//-----------------LIST:  route:  /list-----------------------------
 //------------------------------------------------------------------
 const listRouter = express.Router();
 
@@ -55,7 +56,7 @@ listRouter.post('/', (req, res) => {
     let newList = {
         "name": name,
         "id": uuid.v4(),
-        "listitems": [],
+        //"listitems": [],
     }
 
     console.log(newList.name, newList.id);
@@ -80,6 +81,64 @@ listRouter.delete('/:id', (req, res) => {
         res.status(204).end();
     })
 });
+
+//-----------------LIST ITEMS:  route:  /list-----------------------
+//------------------------------------------------------------------
+
+//curl -XGET localhost:8090/list/bd387f5e-5e26-4a9d-aec5-d6483e9c8740/item -v
+listRouter.get('/:id/item', (req, res) => {
+    fs.readFile('itemDb.json', (err, data) => {
+        if (err) {
+            res.status(400).end();
+            return;
+        }
+        res.send({ data });
+    })
+})
+
+//curl -XPOST localhost:8090/list/bd387f5e-5e26-4a9d-aec5-d6483e9c8740/item -H 'Content-Type: application/json' -d '{"itemName": "keep coding", "id": "bd387f5e-5e26-4a9d-aec5-d6483e9c8740"}' -v    // Working
+listRouter.post('/:id/item', (req, res) => {
+    let id = req.body.id; //it should be the id of the list!
+    let itemName = req.body.itemName;
+
+    if (!itemName || !id) {
+        res.status(400).end();
+        return;
+    }
+
+    let newItem = {
+        "id": id, //it should be the id of the list!
+        "item_id": uuid.v4(),
+        "item_name": itemName,
+        "description": "",
+        "time_stamp": Date.now(),
+    }
+
+    console.log('NEW ITEM: ', newItem.item_name, newItem.item_id, newItem.id);
+
+    ITEM_DB_PATH.push(newItem);
+    fs.writeFile('./itemDb.json', JSON.stringify(ITEM_DB_PATH), (err, data) => {
+        if (err) {
+            res.status(500).end();
+            return;
+        }
+        console.log('NEW ITEM with DATA:', newItem);
+        res.status(201).send(data = { newItem });
+
+    })
+})
+
+//curl -XDELETE localhost:8090/list/bd387f5e-5e26-4a9d-aec5-d6483e9c8740/item/5c50aab7-bda5-4f8f-8264-450a214310d2 -v //working!
+listRouter.delete('/:id/item/:listId', (req, res) => {
+    ITEM_DB_PATH = ITEM_DB_PATH.filter(item => { return item.item_id !== (req.params.listId)});
+
+    fs.writeFile('./itemDb.json', JSON.stringify(ITEM_DB_PATH), (err, data) => {
+        if (err) {
+            res.status(500).end();
+        }
+        res.status(204).end();
+    })
+})
 
 app.use('/list', listRouter);
 
