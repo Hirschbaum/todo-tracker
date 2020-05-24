@@ -2,6 +2,8 @@ import React from 'react';
 import './App.css';
 import axios from 'axios';
 import { GoTrashcan } from 'react-icons/go';
+import ListItem from './ListItem';
+
 
 export default class App extends React.Component {
   constructor(props) {
@@ -58,9 +60,9 @@ export default class App extends React.Component {
       return (
         <div className="list__box" key={id}>
           <h5>{name}</h5>
-          <span onClick={(e) => { this.handleRemoveList(e, id) }}><GoTrashcan/></span>
+          <span onClick={(e) => { this.handleRemoveList(e, id) }}><GoTrashcan /></span>
           <div className="list__items">
-            {/*here later:render listitems/cards */}
+            <ListItem id={id}/>
           </div>
         </div>
       )

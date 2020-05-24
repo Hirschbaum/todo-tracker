@@ -85,14 +85,14 @@ listRouter.delete('/:id', (req, res) => {
 //-----------------LIST ITEMS:  route:  /list-----------------------
 //------------------------------------------------------------------
 
-//curl -XGET localhost:8090/list/bd387f5e-5e26-4a9d-aec5-d6483e9c8740/item -v
+//curl -XGET localhost:8090/list/bd387f5e-5e26-4a9d-aec5-d6483e9c8740/item -v    WORKING - to get all the items
 listRouter.get('/:id/item', (req, res) => {
     fs.readFile('itemDb.json', (err, data) => {
         if (err) {
             res.status(400).end();
             return;
         }
-        res.send({ data });
+        res.status(200).send(data);
     })
 })
 

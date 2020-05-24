@@ -57,3 +57,8 @@ header h1, header p {
   background-color: #eee;
   margin: 1em;
 }
+
+.item__card {
+  background-color: #fff;
+  width: 180px;
+}

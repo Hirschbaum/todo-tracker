@@ -1,21 +1,7 @@
 [
     {
         "name": "test list",
-        "id": "test-123-test-456",
-        "listitems": [
-            {
-                "itemname": "test item 1",
-                "item_id": "test-987-test-654",
-                "description": "test test",
-                "timestamp": "2020-05-20 15:41 test"
-            },
-            {
-                "itemname": "another test item",
-                "item_id": "test-398-test-365",
-                "description": "another test",
-                "timestamp": "2020-05-20 15:42 test"
-            }
-        ]
+        "id": "test-123-test-456"
     },
     {
         "name": "whatever",
