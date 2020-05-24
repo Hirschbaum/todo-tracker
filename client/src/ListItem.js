@@ -26,7 +26,6 @@ export default class ListItem extends React.Component {
 
     handleNewItem = (e) => {
         e.preventDefault();
-        console.log(this.props.id);
         axios.post('/list/:id/item', { itemName: this.state.itemName, id: this.props.id })
             .then(res => {
                 console.log('POSTING NEW ITEM', res);
