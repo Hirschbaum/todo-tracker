@@ -129,8 +129,8 @@ listRouter.post('/:id/item', (req, res) => {
 })
 
 //curl -XDELETE localhost:8090/list/bd387f5e-5e26-4a9d-aec5-d6483e9c8740/item/5c50aab7-bda5-4f8f-8264-450a214310d2 -v //working!
-listRouter.delete('/:id/item/:listId', (req, res) => {
-    ITEM_DB_PATH = ITEM_DB_PATH.filter(item => { return item.item_id !== (req.params.listId)});
+listRouter.delete('/:id/item/:itemId', (req, res) => {
+    ITEM_DB_PATH = ITEM_DB_PATH.filter(item => { return item.item_id !== (req.params.itemId)});
 
     fs.writeFile('./itemDb.json', JSON.stringify(ITEM_DB_PATH), (err, data) => {
         if (err) {

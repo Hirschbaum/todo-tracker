@@ -17,7 +17,7 @@ export default class List extends React.Component {
     componentDidMount() {
         axios.get('/list')
             .then(res => {
-                console.log(res.data);
+                console.log('LISTS', res.data);
                 this.setState({ data: res.data })
             })
             .catch(err => {
@@ -81,7 +81,7 @@ export default class List extends React.Component {
                     <div className='list__create--btn-div'>
                         <button onClick={(e) => { this.handleNewList(e) }}>
                             Add
-                </button>
+                        </button>
                     </div>
                 </div>
 

@@ -16,7 +16,7 @@ export default class ListItem extends React.Component {
     componentDidMount() {
         axios.get('/list/:id/item')
             .then(res => {
-                console.log(res.data);
+                console.log('ITEMS', res.data);
                 this.setState({ itemData: res.data })
             })
             .catch(err => {
@@ -36,6 +36,18 @@ export default class ListItem extends React.Component {
             })
     }
 
+    handleRemoveItem = (e, itemId) => {
+        e.preventDefault();
+        axios.delete('/list/:id/item/' + itemId)
+            .then(res => {
+                console.log('Item to REMOVE', res);
+                this.setState({ itemData: this.state.itemData.filter(x => itemId !== x.item_id) });
+            })
+            .catch(err => {
+                console.log('Error by removing item', err);
+            })
+    }
+
     onChange = (e) => {
         this.setState({ itemName: e.target.value });
     }
@@ -44,13 +56,13 @@ export default class ListItem extends React.Component {
         let filteredItems = this.state.itemData.filter(item => { return item.id === this.props.id });
 
         return filteredItems.map((item) => {
-            const { id, item_name, item_id, description, time_stamp } = item;
+            const { item_name, item_id, description, time_stamp } = item;
             return (
                 <div className="item__card" key={item_id}>
                     <h5>{item_name}</h5>
                     <p>{description}</p>
                     <p>{new Date(time_stamp).toLocaleString()}</p>
-                    <span onClick={(e) => { this.handleRemoveItem(e, id) }}>Delete Item</span>
+                    <button onClick={(e) => { this.handleRemoveItem(e, item_id) }}>Delete Item</button>
                 </div>
             )
         })
