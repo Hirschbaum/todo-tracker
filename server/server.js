@@ -154,20 +154,18 @@ listRouter.patch('/:id/item/:itemId', (req, res) => {
         return;
     }
 
-    let targetedItem = ITEM_DB_PATH.filter(item => {return item.item_id === itemId});
-    
-    Object.assign(targetedItem, {"item_name": itemName, "description": itemDescription}); //nope
-    console.log('TARGETED', targetedItem);
+    let index = ITEM_DB_PATH.findIndex(item => { return item.item_id === itemId });
+    let targetedItem = ITEM_DB_PATH[index];
 
-    //how to replace the original item with targetedItem? map och filter?
-    ITEM_DB_PATH.push(targetedItem);
+    ITEM_DB_PATH[index] = Object.assign(targetedItem, { "item_name": itemName, "description": itemDescription }); 
+
     fs.writeFile('./itemDb.json', JSON.stringify(ITEM_DB_PATH), (err, data) => {
         if (err) {
             res.status(500).end();
             return;
         }
         console.log('EDITED ITEM with DATA:', targetedItem);
-        res.status(201).send(data = {targetedItem});
+        res.status(201).send(data = { targetedItem });
     })
 })
 

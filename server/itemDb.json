@@ -26,14 +26,5 @@
         "item_name": "delete console logs",
         "description": "",
         "time_stamp": 1590339703399
-    },
-    [
-        {
-            "id": "bd387f5e-5e26-4a9d-aec5-d6483e9c8740",
-            "item_id": "249b8957-fb9a-40c7-a6f3-9e705386f281",
-            "item_name": "fix cards",
-            "description": "default",
-            "time_stamp": 1590334686706
-        }
-    ]
+    }
 ]
