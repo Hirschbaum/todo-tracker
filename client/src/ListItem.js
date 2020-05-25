@@ -29,7 +29,8 @@ export default class ListItem extends React.Component {
         axios.post('/list/:id/item', { itemName: this.state.itemName, id: this.props.id })
             .then(res => {
                 console.log('POSTING NEW ITEM', res);
-                this.setState({ itemData: [...this.state.itemData, res.data.newItem] })
+                this.setState({ itemData: [...this.state.itemData, res.data.newItem] });
+                this.setState({itemName: ''});
             })
             .catch(err => {
                 console.log('Error by posting new item', err);
@@ -78,7 +79,7 @@ export default class ListItem extends React.Component {
                     type="text" className="text" 
                     value={this.state.itemName} 
                     onChange={this.onChange} 
-                    placeholder='new card'/>
+                    placeholder='New Card'/>
                     <button onClick={(e) => { this.handleNewItem(e) }}>Add Card</button>
                 </div>
             </div>

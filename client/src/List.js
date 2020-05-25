@@ -30,7 +30,8 @@ export default class List extends React.Component {
         axios.post('/list', { name: this.state.name })
             .then(res => {
                 console.log('GOT RESPONSE POSTING NEW LIST', res);
-                this.setState({ data: [...this.state.data, res.data.newList] })
+                this.setState({ data: [...this.state.data, res.data.newList] });
+                this.setState({ name: '' });
             })
             .catch(err => {
                 console.log('Error by posting new list', err);
@@ -75,7 +76,7 @@ export default class List extends React.Component {
 
                 <div className='list__create'>
                     <div className='list__create--input-div'>
-                        <input type='text' value={this.state.name} onChange={this.onChange} placeholder='Type here' />
+                        <input type='text' value={this.state.name} onChange={this.onChange} placeholder='New List' />
                     </div>
 
                     <div className='list__create--btn-div'>

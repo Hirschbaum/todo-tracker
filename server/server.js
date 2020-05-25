@@ -6,7 +6,7 @@ const uuid = require('uuid');
 
 
 let DB_PATH = require('./db.json');
-let ITEM_DB_PATH= require('./itemDb.json');
+let ITEM_DB_PATH = require('./itemDb.json');
 
 app.use(express.json());
 
@@ -130,13 +130,44 @@ listRouter.post('/:id/item', (req, res) => {
 
 //curl -XDELETE localhost:8090/list/bd387f5e-5e26-4a9d-aec5-d6483e9c8740/item/5c50aab7-bda5-4f8f-8264-450a214310d2 -v //working!
 listRouter.delete('/:id/item/:itemId', (req, res) => {
-    ITEM_DB_PATH = ITEM_DB_PATH.filter(item => { return item.item_id !== (req.params.itemId)});
+    ITEM_DB_PATH = ITEM_DB_PATH.filter(item => { return item.item_id !== (req.params.itemId) });
 
     fs.writeFile('./itemDb.json', JSON.stringify(ITEM_DB_PATH), (err, data) => {
         if (err) {
             res.status(500).end();
         }
         res.status(204).end();
+    })
+})
+
+//-----------------EDIT ITEMS:  route:  /list/:id/item/:itemId-----------------------
+//-----------------to change item_name and/or description---item_id---------------------
+
+//curl -XPATCH localhost:8090/list/bd387f5e-5e26-4a9d-aec5-d6483e9c8740/item/249b8957-fb9a-40c7-a6f3-9e705386f281 -H 'Content-Type: application/json' -d '{"itemName": "edited titel", "description": "edited description"}' -v
+listRouter.patch('/:id/item/:itemId', (req, res) => {
+    let itemId = req.params.itemId; //req.body
+    let itemName = req.body.itemName;
+    let itemDescription = req.body.description;
+
+    if (!itemId) {
+        res.status(400).end();
+        return;
+    }
+
+    let targetedItem = ITEM_DB_PATH.filter(item => {return item.item_id === itemId});
+    
+    Object.assign(targetedItem, {"item_name": itemName, "description": itemDescription}); //nope
+    console.log('TARGETED', targetedItem);
+
+    //how to replace the original item with targetedItem? map och filter?
+    ITEM_DB_PATH.push(targetedItem);
+    fs.writeFile('./itemDb.json', JSON.stringify(ITEM_DB_PATH), (err, data) => {
+        if (err) {
+            res.status(500).end();
+            return;
+        }
+        console.log('EDITED ITEM with DATA:', targetedItem);
+        res.status(201).send(data = {targetedItem});
     })
 })
 
