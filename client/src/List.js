@@ -59,8 +59,12 @@ export default class List extends React.Component {
             const { name, id } = list;
             return (
                 <div className="list__box" key={id}>
-                    <h5>{name}</h5>
-                    <span onClick={(e) => { this.handleRemoveList(e, id) }}><GoTrashcan /></span>
+                    <div className="list__box--header">
+                        <h4 style={{marginLeft: '1em'}}>{name}</h4>
+                        <h4 
+                        onClick={(e) => { this.handleRemoveList(e, id) }}
+                        style={{marginRight: '0.7em'}}><GoTrashcan /></h4>
+                    </div>
                     <div className="list__items">
                         <ListItem id={id} />
                     </div>

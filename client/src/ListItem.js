@@ -1,5 +1,8 @@
 import React from 'react';
 import axios from 'axios';
+import { GoPencil, GoTrashcan } from 'react-icons/go';
+import { TiArrowForward } from 'react-icons/ti';
+
 
 export default class ListItem extends React.Component {
 
@@ -30,7 +33,7 @@ export default class ListItem extends React.Component {
             .then(res => {
                 console.log('POSTING NEW ITEM', res);
                 this.setState({ itemData: [...this.state.itemData, res.data.newItem] });
-                this.setState({itemName: ''});
+                this.setState({ itemName: '' });
             })
             .catch(err => {
                 console.log('Error by posting new item', err);
@@ -59,11 +62,18 @@ export default class ListItem extends React.Component {
         return filteredItems.map((item) => {
             const { item_name, item_id, description, time_stamp } = item;
             return (
-                <div className="item__card" key={item_id}>
+                <div className='item__card' key={item_id}>
                     <h5>{item_name}</h5>
                     <p>{description}</p>
-                    <p>{new Date(time_stamp).toLocaleString()}</p>
-                    <button onClick={(e) => { this.handleRemoveItem(e, item_id) }}>Delete Item</button>
+                    <div className='item__cards--details'>
+                        <p style={{ fontSize: '0.7em', color: '#1D4B73' }}>{new Date(time_stamp).toLocaleDateString()}</p>
+                        <div className='item__cards--buttonBox'>
+                            <button className='item__cards--button'><GoPencil style={{color: '#60AEBF'}}/></button>
+                            <button className='item__cards--button'><TiArrowForward style={{color: '#60AEBF'}}/></button>
+                            <button onClick={(e) => { this.handleRemoveItem(e, item_id) }}
+                            className='item__cards--button'><GoTrashcan style={{color: '#60AEBF'}}/></button>
+                        </div>
+                    </div>
                 </div>
             )
         })
@@ -75,11 +85,11 @@ export default class ListItem extends React.Component {
                 {this.renderItems()}
 
                 <div className='item__create'>
-                    <input 
-                    type="text" className="text" 
-                    value={this.state.itemName} 
-                    onChange={this.onChange} 
-                    placeholder='New Card'/>
+                    <input
+                        type="text" className="text"
+                        value={this.state.itemName}
+                        onChange={this.onChange}
+                        placeholder='New Card' />
                     <button onClick={(e) => { this.handleNewItem(e) }}>Add Card</button>
                 </div>
             </div>
