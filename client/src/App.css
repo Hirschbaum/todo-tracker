@@ -127,7 +127,30 @@ header h1, header p {
   border: none;
   cursor: pointer;
 }
+/*---------------- ADD NEW CARD / ITEM ---------------*/
+.item__create {
+ display: flex;
+ margin: 1em 0.7em;
+ box-sizing: border-box;
+}
 
+.item__create--input {
+  border-bottom: 1px solid #60AEBF;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  color: #1B3C59;
+  background-color: #CEDEDE;
+}
+
+.item__create--button {
+  background-color: #CEDEDE;
+  border: none;
+}
+
+.item__create--button:hover {
+  cursor: pointer;
+}
 
 /*---------------- MODALS -----------*/
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&display=swap');

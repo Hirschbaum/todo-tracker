@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { GoPencil, GoTrashcan } from 'react-icons/go';
 import { TiArrowForward } from 'react-icons/ti';
+import { FaPlusCircle } from 'react-icons/fa';
 import ModalEdit from './ModalEdit';
 
 
@@ -110,11 +111,15 @@ export default class ListItem extends React.Component {
 
                 <div className='item__create'>
                     <input
-                        type="text" className="text"
+                        type='text' className='item__create--input'
                         value={this.state.itemName}
                         onChange={this.onChange}
-                        placeholder='New Card' />
-                    <button onClick={(e) => { this.handleNewItem(e) }}>Add Card</button>
+                        placeholder='Add New Card' />
+                    <button 
+                    
+                    onClick={(e) => { this.handleNewItem(e) }}
+                    className='item__create--button'
+                    ><FaPlusCircle style={{ color: '#60AEBF', fontSize: '1.4em', padding: '0 2%' }}/></button>
                 </div>
             </div>
         )
