@@ -17,7 +17,7 @@ export default class List extends React.Component {
     componentDidMount() {
         axios.get('/list')
             .then(res => {
-                console.log('LISTS', res.data);
+                //console.log('LISTS', res.data);
                 this.setState({ data: res.data })
             })
             .catch(err => {

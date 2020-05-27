@@ -11,6 +11,7 @@ export default class ListItem extends React.Component {
         super(props);
 
         this.state = {
+            description: '',
             itemData: [],
             itemName: '',
             id: '',
@@ -21,12 +22,16 @@ export default class ListItem extends React.Component {
     componentDidMount() {
         axios.get('/list/:id/item')
             .then(res => {
-                console.log('ITEMS', res.data);
+                //console.log('ITEMS', res.data);
                 this.setState({ itemData: res.data })
             })
             .catch(err => {
                 console.log('Error by GET all ITEM data', err);
             })
+    }
+
+    handleNameAndDescription = (props) => { //this is not working
+        this.setState({description: props.description, itemName: props.itemName})
     }
 
     handleEditModal = () => {
@@ -66,7 +71,7 @@ export default class ListItem extends React.Component {
         let filteredItems = this.state.itemData.filter(item => { return item.id === this.props.id });
 
         return filteredItems.map((item) => {
-            const { item_name, item_id, description, time_stamp } = item;
+            const { item_name, item_id, description, time_stamp, id } = item;
             return (
                 <div className='item__card' key={item_id}>
                     <h5>{item_name}</h5>
@@ -79,7 +84,7 @@ export default class ListItem extends React.Component {
                             >
                                 <GoPencil style={{ color: '#60AEBF' }} />
                             </button>
-                            {this.state.showEdit ? <ModalEdit handleEditModal={this.handleEditModal} itemName={item_name} description={description} timeStamp={time_stamp} /> : null}
+                            {this.state.showEdit ? <ModalEdit handleEditModal={this.handleEditModal} itemName={item_name} description={description} timeStamp={time_stamp} itemId={item_id} id={id}/> : null}
 
                             <button className='item__cards--button'><TiArrowForward style={{ color: '#60AEBF' }} /></button>
                             <button onClick={(e) => { this.handleRemoveItem(e, item_id) }}

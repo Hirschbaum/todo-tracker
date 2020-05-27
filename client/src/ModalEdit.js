@@ -1,17 +1,34 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
+import axios from 'axios';
 
 const ModalEdit = (props) => {
 
-    const [ descriptionInput, updateDescription ] = useState(props.description);
-    const [ titleInput, updateTitle ] = useState(props.itemName);
+    const [ description, updateDescription ] = useState(props.description);
+    const [ itemName, updateTitle ] = useState(props.itemName);
+    
+    const handleNameAndDescription = () => {
+        props.handleNameAndDescription();
+    }
 
     const cancelEditModal = () => {
         props.handleEditModal();
     }
 
-    const handleEditedChanges = () => {
-        //axios patch
+    const handleEditedChanges = (e) => {
+        e.preventDefault();
+        console.log(itemName, description)
+        let id = props.id;
+        let itemId = props.itemId; 
+        axios.patch(`/list/${id}/item/${itemId}`, { itemName: itemName , description: description })
+            .then(res => {
+                console.log('EDITING CARD', res); 
+                handleNameAndDescription();
+                //cancelEditModal(); //to close the modal
+            })
+            .catch(err => {
+                console.log('Error by editing list item alias CARD', err);
+            })
     }
 
     const onChangeDescription = (e) => {
@@ -37,7 +54,7 @@ const ModalEdit = (props) => {
 				</label>
                 <form onSubmit={handleEditedChanges}>
                     <input
-                        value={titleInput}
+                        value={itemName}
                         onChange={onChangeTitle}
                         type='text'
                         name='editCard' id={props.itemName}
@@ -55,7 +72,7 @@ const ModalEdit = (props) => {
 
                     <input
                         onChange={onChangeDescription}
-                        value={descriptionInput}
+                        value={description}
                         type='text'
                         name='description' id={props.timeStamp}
                         placeholder='Type card description here'
