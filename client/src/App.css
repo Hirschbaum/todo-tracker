@@ -5,10 +5,12 @@ auqa green: #60AEBF
 light green: #CEDEDE
 light grey: #F2F2F2
 */
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed&display=swap');
 
 * {
   font-family: 'Roboto Condensed', sans-serif;
 }
+
 header {
   background-color: #1D4B73;
   color: #F2F2F2;
@@ -123,7 +125,9 @@ header h1, header p {
 .item__cards--button {
   background-color: #F2F2F2;
   border: none;
+  cursor: pointer;
 }
+
 
 /*---------------- MODALS -----------*/
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&display=swap');

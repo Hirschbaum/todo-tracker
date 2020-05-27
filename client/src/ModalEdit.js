@@ -1,22 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 
 const ModalEdit = (props) => {
 
+    const [ descriptionInput, updateDescription ] = useState(props.description);
+    const [ titleInput, updateTitle ] = useState(props.itemName);
+
     const cancelEditModal = () => {
-        //useState to switch off the modal
+        props.handleEditModal();
     }
 
-    const handleEditModal = () => {
+    const handleEditedChanges = () => {
         //axios patch
     }
 
     const onChangeDescription = (e) => {
-        //useState
+        updateDescription(e.target.value);
     }
 
     const onChangeTitle = (e) => {
-        //useState
+        updateTitle(e.target.value);
     }
 
     return ReactDOM.createPortal(
@@ -32,14 +35,15 @@ const ModalEdit = (props) => {
                 >
                     Card Titel
 				</label>
-                <form onSubmit={this.onSubmit}>
+                <form onSubmit={handleEditedChanges}>
                     <input
+                        value={titleInput}
                         onChange={onChangeTitle}
                         type='text'
-                        name='editCard' id='editCard'
-                        placeholder='' /*should be the value of the item_name */
+                        name='editCard' id={props.itemName}
+                        placeholder={props.itemName}
                         style={{ borderRadius: '0.3rem', padding: '2%', border: '1px solid #ddd', marginBottom: '10px' }}
-                        min='3' max='50'
+                        minLength='3' maxLength='50'
                     />
 
                     <label
@@ -51,21 +55,22 @@ const ModalEdit = (props) => {
 
                     <input
                         onChange={onChangeDescription}
+                        value={descriptionInput}
                         type='text'
-                        name='description' id='description'
+                        name='description' id={props.timeStamp}
                         placeholder='Type card description here'
                         style={{ borderRadius: '0.3rem', padding: '2%', border: '1px solid #ddd' }}
-                        min='3' max='100'
+                        minLength='3' maxLength='100'
                     />
 
                     <div className='modalsButtonsContainer'>
                         <div
-                            onClick={() => cancelEditModal(false)}
+                            onClick={cancelEditModal}
                             className='modalButtons'>
                             Cancel
 						</div>
                         <button
-                            onSubmit={() => handleEditModal()}
+                            onSubmit={handleEditedChanges}
                             type='submit'
                             className='modalButtons blueButtons'>
                             Except

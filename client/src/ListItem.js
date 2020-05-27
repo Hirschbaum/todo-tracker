@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { GoPencil, GoTrashcan } from 'react-icons/go';
 import { TiArrowForward } from 'react-icons/ti';
+import ModalEdit from './ModalEdit';
 
 
 export default class ListItem extends React.Component {
@@ -13,6 +14,7 @@ export default class ListItem extends React.Component {
             itemData: [],
             itemName: '',
             id: '',
+            showEdit: false,
         }
     }
 
@@ -25,6 +27,10 @@ export default class ListItem extends React.Component {
             .catch(err => {
                 console.log('Error by GET all ITEM data', err);
             })
+    }
+
+    handleEditModal = () => {
+        this.setState({ showEdit: !(this.state.showEdit) })
     }
 
     handleNewItem = (e) => {
@@ -68,10 +74,16 @@ export default class ListItem extends React.Component {
                     <div className='item__cards--details'>
                         <p style={{ fontSize: '0.7em', color: '#1D4B73' }}>{new Date(time_stamp).toLocaleDateString()}</p>
                         <div className='item__cards--buttonBox'>
-                            <button className='item__cards--button'><GoPencil style={{color: '#60AEBF'}}/></button>
-                            <button className='item__cards--button'><TiArrowForward style={{color: '#60AEBF'}}/></button>
+                            <button className='item__cards--button'
+                                onClick={this.handleEditModal}
+                            >
+                                <GoPencil style={{ color: '#60AEBF' }} />
+                            </button>
+                            {this.state.showEdit ? <ModalEdit handleEditModal={this.handleEditModal} itemName={item_name} description={description} timeStamp={time_stamp} /> : null}
+
+                            <button className='item__cards--button'><TiArrowForward style={{ color: '#60AEBF' }} /></button>
                             <button onClick={(e) => { this.handleRemoveItem(e, item_id) }}
-                            className='item__cards--button'><GoTrashcan style={{color: '#60AEBF'}}/></button>
+                                className='item__cards--button'><GoTrashcan style={{ color: '#60AEBF' }} /></button>
                         </div>
                     </div>
                 </div>
