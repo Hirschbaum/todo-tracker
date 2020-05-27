@@ -30,8 +30,15 @@ export default class ListItem extends React.Component {
             })
     }
 
-    handleNameAndDescription = (props) => { //this is not working
-        this.setState({description: props.description, itemName: props.itemName})
+    handleRefreshItems = () => {
+        axios.get('/list/:id/item')
+            .then(res => {
+                //console.log('ITEMS', res.data);
+                this.setState({ itemData: res.data })
+            })
+            .catch(err => {
+                console.log('Error by GET all ITEM data', err);
+            })
     }
 
     handleEditModal = () => {
@@ -84,7 +91,7 @@ export default class ListItem extends React.Component {
                             >
                                 <GoPencil style={{ color: '#60AEBF' }} />
                             </button>
-                            {this.state.showEdit ? <ModalEdit handleEditModal={this.handleEditModal} itemName={item_name} description={description} timeStamp={time_stamp} itemId={item_id} id={id}/> : null}
+                            {this.state.showEdit ? <ModalEdit handleEditModal={this.handleEditModal} itemName={item_name} description={description} timeStamp={time_stamp} itemId={item_id} id={id} handleRefreshItems={this.handleRefreshItems} /> : null}
 
                             <button className='item__cards--button'><TiArrowForward style={{ color: '#60AEBF' }} /></button>
                             <button onClick={(e) => { this.handleRemoveItem(e, item_id) }}

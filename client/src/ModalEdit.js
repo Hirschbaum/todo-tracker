@@ -6,9 +6,10 @@ const ModalEdit = (props) => {
 
     const [ description, updateDescription ] = useState(props.description);
     const [ itemName, updateTitle ] = useState(props.itemName);
-    
-    const handleNameAndDescription = () => {
-        props.handleNameAndDescription();
+
+
+    const handleRefreshItems = () => {
+        props.handleRefreshItems();
     }
 
     const cancelEditModal = () => {
@@ -23,8 +24,8 @@ const ModalEdit = (props) => {
         axios.patch(`/list/${id}/item/${itemId}`, { itemName: itemName , description: description })
             .then(res => {
                 console.log('EDITING CARD', res); 
-                handleNameAndDescription();
-                //cancelEditModal(); //to close the modal
+                handleRefreshItems(); //to refresh items in ListItem with GET
+                cancelEditModal(); //to close the modal
             })
             .catch(err => {
                 console.log('Error by editing list item alias CARD', err);
