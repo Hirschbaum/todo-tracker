@@ -16,7 +16,7 @@ export default class ListItem extends React.Component {
             itemData: [],
             itemName: '',
             id: '',
-            showEdit: false,
+            showEdit: '',
         }
     }
 
@@ -31,19 +31,8 @@ export default class ListItem extends React.Component {
             })
     }
 
-    handleRefreshItems = () => {
-        axios.get('/list/:id/item')
-            .then(res => {
-                //console.log('ITEMS', res.data);
-                this.setState({ itemData: res.data })
-            })
-            .catch(err => {
-                console.log('Error by GET all ITEM data', err);
-            })
-    }
-
-    handleEditModal = () => {
-        this.setState({ showEdit: !(this.state.showEdit) })
+    handleEditModal = (item_id) => {
+        this.setState({ showEdit: item_id });
     }
 
     handleNewItem = (e) => {
@@ -88,11 +77,11 @@ export default class ListItem extends React.Component {
                         <p style={{ fontSize: '0.7em', color: '#1D4B73' }}>{new Date(time_stamp).toLocaleDateString()}</p>
                         <div className='item__cards--buttonBox'>
                             <button className='item__cards--button'
-                                onClick={this.handleEditModal}
+                                onClick={() => { this.handleEditModal(item_id) }}
                             >
                                 <GoPencil style={{ color: '#60AEBF' }} />
                             </button>
-                            {this.state.showEdit ?
+                            {this.state.showEdit === item_id ?
                                 <ModalEdit
                                     handleEditModal={this.handleEditModal}
                                     itemName={item_name}
