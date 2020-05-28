@@ -140,16 +140,17 @@ listRouter.delete('/:id/item/:itemId', (req, res) => {
     })
 })
 
-//-----------------EDIT ITEMS:  route:  /list/:id/item/:itemId-----------------------
+//-----------------EDIT ITEMS:  route:  /list/:id/item/:itemId--------------------------
 //-----------------to change item_name and/or description---item_id---------------------
 
 //curl -XPATCH localhost:8090/list/bd387f5e-5e26-4a9d-aec5-d6483e9c8740/item/249b8957-fb9a-40c7-a6f3-9e705386f281 -H 'Content-Type: application/json' -d '{"itemName": "edited titel", "description": "edited description"}' -v
 listRouter.patch('/:id/item/:itemId', (req, res) => {
     let itemId = req.params.itemId; //req.body
+    let id = req.params.id; //NEW
     let itemName = req.body.itemName;
     let itemDescription = req.body.description;
 
-    if (!itemId) {
+    if (!itemId && !id) {
         res.status(400).end();
         return;
     }
@@ -157,17 +158,49 @@ listRouter.patch('/:id/item/:itemId', (req, res) => {
     let index = ITEM_DB_PATH.findIndex(item => { return item.item_id === itemId });
     let targetedItem = ITEM_DB_PATH[index];
 
-    ITEM_DB_PATH[index] = Object.assign(targetedItem, { "item_name": itemName, "description": itemDescription }); 
+    ITEM_DB_PATH[index] = Object.assign(targetedItem, { "item_name": itemName, "description": itemDescription });
 
     fs.writeFile('./itemDb.json', JSON.stringify(ITEM_DB_PATH), (err, data) => {
         if (err) {
             res.status(500).end();
             return;
         }
-        console.log('EDITED ITEM with DATA:', targetedItem);
+        console.log('EDITED ITEM:', targetedItem);
         res.status(201).send(data = { targetedItem });
     })
 })
+
+//-----------------MOVE ITEMS:  route:  /list/:id/item/:itemId/move/-----------------------
+//---------------------------to change list id to one item -------------------------------------
+
+//curl -XPATCH localhost:8090/list/test-123-test-456/item/6970118b-197d-4fe9-8a5c-62f4840ec108/move -H 'Content-Type: application/json' -d '{"id": "8cfd594e-f2c5-4702-a9e3-22b5e6537f15"}' -v - WORKING
+listRouter.patch('/:id/item/:itemId/move', (req, res) => {
+
+    let id = req.params.id;
+    let itemId = req.params.itemId;
+    let newId = req.body.newId;
+
+    if (!id && !itemId) {
+        res.status(400).end();
+        return;
+    }
+
+    console.log(id, itemId);
+    let index = ITEM_DB_PATH.findIndex(item => { return item.item_id === itemId });
+    let moveItem = ITEM_DB_PATH[index];
+
+    ITEM_DB_PATH[index] = Object.assign( moveItem, { "id": id });
+
+    fs.writeFile('./itemDb.json', JSON.stringify(ITEM_DB_PATH), (err, data) => {
+        if (err) {
+            res.status(500).end();
+            return;
+        }
+        console.log('MOVED ITEM: ', moveItem);
+        res.status(201).send(data = { moveItem });
+    })
+})
+
 
 app.use('/list', listRouter);
 

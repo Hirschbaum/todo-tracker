@@ -92,7 +92,16 @@ export default class ListItem extends React.Component {
                             >
                                 <GoPencil style={{ color: '#60AEBF' }} />
                             </button>
-                            {this.state.showEdit ? <ModalEdit handleEditModal={this.handleEditModal} itemName={item_name} description={description} timeStamp={time_stamp} itemId={item_id} id={id} handleRefreshItems={this.handleRefreshItems} /> : null}
+                            {this.state.showEdit ?
+                                <ModalEdit
+                                    handleEditModal={this.handleEditModal}
+                                    itemName={item_name}
+                                    description={description}
+                                    timeStamp={time_stamp}
+                                    itemId={item_id}
+                                    id={id}
+                                    handleRefreshItems={this.handleRefreshItems} />
+                                : null}
 
                             <button className='item__cards--button'><TiArrowForward style={{ color: '#60AEBF' }} /></button>
                             <button onClick={(e) => { this.handleRemoveItem(e, item_id) }}
@@ -115,11 +124,11 @@ export default class ListItem extends React.Component {
                         value={this.state.itemName}
                         onChange={this.onChange}
                         placeholder='Add New Card' />
-                    <button 
-                    
-                    onClick={(e) => { this.handleNewItem(e) }}
-                    className='item__create--button'
-                    ><FaPlusCircle style={{ color: '#60AEBF', fontSize: '1.4em', padding: '0 2%' }}/></button>
+                    <button
+
+                        onClick={(e) => { this.handleNewItem(e) }}
+                        className='item__create--button'
+                    ><FaPlusCircle style={{ color: '#60AEBF', fontSize: '1.4em', padding: '0 2%' }} /></button>
                 </div>
             </div>
         )
