@@ -66,7 +66,7 @@ export default class List extends React.Component {
                         style={{marginRight: '0.7em'}}><GoTrashcan /></h4>
                     </div>
                     <div className="list__items">
-                        <ListItem id={id} />
+                        <ListItem id={id} data={this.state.data}/>
                     </div>
                 </div>
             )
@@ -77,7 +77,7 @@ export default class List extends React.Component {
         return (
             <div className="list__container">
                 {this.renderLists()}
-
+                
                 <div className='list__create'>
                     <div className='list__create--input-div'>
                         <input type='text' value={this.state.name} onChange={this.onChange} placeholder='New List' />

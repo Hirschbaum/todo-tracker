@@ -4,6 +4,7 @@ import { GoPencil, GoTrashcan } from 'react-icons/go';
 import { TiArrowForward } from 'react-icons/ti';
 import { FaPlusCircle } from 'react-icons/fa';
 import ModalEdit from './ModalEdit';
+import ModalMove from './ModalMove';
 
 
 export default class ListItem extends React.Component {
@@ -17,6 +18,8 @@ export default class ListItem extends React.Component {
             itemName: '',
             id: '',
             showEdit: '',
+            showMove: '',
+            newId: '',
         }
     }
 
@@ -33,6 +36,14 @@ export default class ListItem extends React.Component {
 
     handleEditModal = (item_id) => {
         this.setState({ showEdit: item_id });
+    }
+
+    handleMoveModal = (item_id) => {
+        this.setState({ showMove: item_id });
+    }
+
+    handleNewListId = (e) => {
+        this.setState({ newId: e.target.value })
     }
 
     handleNewItem = (e) => {
@@ -76,6 +87,8 @@ export default class ListItem extends React.Component {
                     <div className='item__cards--details'>
                         <p style={{ fontSize: '0.7em', color: '#1D4B73' }}>{new Date(time_stamp).toLocaleDateString()}</p>
                         <div className='item__cards--buttonBox'>
+
+                            {/*-------------------- EDIT BUTTON AND MODAL -------------------------------------- */}
                             <button className='item__cards--button'
                                 onClick={() => { this.handleEditModal(item_id) }}
                             >
@@ -89,10 +102,27 @@ export default class ListItem extends React.Component {
                                     timeStamp={time_stamp}
                                     itemId={item_id}
                                     id={id}
-                                    handleRefreshItems={this.handleRefreshItems} />
+                                />
                                 : null}
 
-                            <button className='item__cards--button'><TiArrowForward style={{ color: '#60AEBF' }} /></button>
+                            {/*-------------------- MOVE BUTTON AND MODAL -------------------------------------- */}
+                            <button className='item__cards--button'
+                                onClick={() => { this.handleMoveModal(item_id) }}
+                            >
+                                <TiArrowForward style={{ color: '#60AEBF' }} />
+                            </button>
+                            {this.state.showMove === item_id ?
+                                <ModalMove
+                                    handleMoveModal={this.handleMoveModal}
+                                    id={id}
+                                    itemId={item_id}
+                                    data={this.props.data}
+                                    newId={this.state.newId}
+                                    /*handleNewListId={this.handleNewListId}*/
+                                    renderListNames={this.renderListNames}
+                                />
+                                : null}
+
                             <button onClick={(e) => { this.handleRemoveItem(e, item_id) }}
                                 className='item__cards--button'><GoTrashcan style={{ color: '#60AEBF' }} /></button>
                         </div>
@@ -102,7 +132,16 @@ export default class ListItem extends React.Component {
         })
     }
 
+    renderListNames = (props) => {
+        return props.data.map(list => {
+            const { name, id } = list;
+            return (
+                <option value={id}> {name} </option>
+            )
+        })
+    }
     render() {
+        console.log('ListItem', this.props.data)
         return (
             <div>
                 {this.renderItems()}
@@ -114,10 +153,11 @@ export default class ListItem extends React.Component {
                         onChange={this.onChange}
                         placeholder='Add New Card' />
                     <button
-
                         onClick={(e) => { this.handleNewItem(e) }}
                         className='item__create--button'
-                    ><FaPlusCircle style={{ color: '#60AEBF', fontSize: '1.4em', padding: '0 2%' }} /></button>
+                    >
+                        <FaPlusCircle style={{ color: '#60AEBF', fontSize: '1.4em', padding: '0 2%' }} />
+                    </button>
                 </div>
             </div>
         )
