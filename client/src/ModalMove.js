@@ -31,7 +31,9 @@ const ModalMove = (props) => {
     }
 
    const renderListNames = (props) => {
-        return props.data.map(list => {
+        return props.data
+        .filter(list => list.id !== props.id) //so I don't get the same list as an option
+        .map(list => {
             const { name, id } = list;
             return (
                 <option value={id} key={id}> {name} </option> //this value as newId
@@ -53,7 +55,7 @@ const ModalMove = (props) => {
                         htmlFor='moveCard'
                         style={{ textAlign: 'left', fontSize: '12px', marginBottom: '3px', marginTop: '10px' }}
                     >
-                        Move <span style={{color: '#1D4B73', fontWeight: '700'}}>{props.itemName} </span> card to this list: 
+                        Move card "<span style={{color: '#1D4B73', fontWeight: '700'}}>{props.itemName} </span>" to this list: 
 				    </label>
 
                     <select 
@@ -61,7 +63,6 @@ const ModalMove = (props) => {
                         onChange={onChangeListId}
                         name="moveCard" id="moveCard" required
                     >
-                        <option value='default_option'>Choose...</option>
                         {renderListNames(props)}
                     </select>
 
