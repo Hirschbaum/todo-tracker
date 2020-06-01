@@ -135,23 +135,25 @@ export default class ListItem extends React.Component {
 
 
     render() {
-        console.log('ListItem', this.props.data)
         return (
             <div>
                 {this.renderItems()}
 
                 <div className='item__create'>
-                    <input
-                        type='text' className='item__create--input'
-                        value={this.state.itemName}
-                        onChange={this.onChange}
-                        placeholder='Add New Card' />
-                    <button
-                        onClick={(e) => { this.handleNewItem(e) }}
-                        className='item__create--button'
-                    >
-                        <FaPlusCircle style={{ color: '#60AEBF', fontSize: '1.4em', padding: '0 2%' }} />
-                    </button>
+                    <form onSubmit={(e) => { this.handleNewItem(e) }}>
+                        <input
+                            type='text' className='item__create--input'
+                            value={this.state.itemName}
+                            onChange={this.onChange}
+                            minLength='3' maxLength='40'
+                            placeholder='Add New Card' />
+                        <button
+                            onSubmit={(e) => { this.handleNewItem(e) }}
+                            className='item__create--button'
+                        >
+                            <FaPlusCircle style={{ color: '#60AEBF', fontSize: '1.4em', padding: '0 2%' }} />
+                        </button>
+                    </form>
                 </div>
             </div>
         )

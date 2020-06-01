@@ -6,8 +6,8 @@ const ModalMove = (props) => {
 
     const [id, update] = useState('');
 
-    const onChangeListId = () => {
-        update(id);
+    const onChangeListId = (e) => {
+        update(e.target.value);
     }
 
     const cancelMoveModal = (str) => {
@@ -60,6 +60,7 @@ const ModalMove = (props) => {
                     value={id}
                     onChange={onChangeListId}
                     name="moveCard" id="moveCard" required>
+                        <option value='default_option'>Click one option below</option>
                         {renderListNames(props)}
                     </select>
 

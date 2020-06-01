@@ -128,7 +128,7 @@ header h1, header p {
   cursor: pointer;
 }
 /*---------------- ADD NEW CARD / ITEM ---------------*/
-.item__create {
+.item__create form {
  display: flex;
  margin: 1em 0.7em;
  box-sizing: border-box;

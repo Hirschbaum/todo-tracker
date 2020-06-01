@@ -80,7 +80,13 @@ export default class List extends React.Component {
                 
                 <div className='list__create'>
                     <div className='list__create--input-div'>
-                        <input type='text' value={this.state.name} onChange={this.onChange} placeholder='New List' />
+                        <input 
+                        type='text' 
+                        value={this.state.name} 
+                        onChange={this.onChange} 
+                        placeholder='New List' 
+                        minLength='3' maxLength='40'
+                        />
                     </div>
 
                     <div className='list__create--btn-div'>
