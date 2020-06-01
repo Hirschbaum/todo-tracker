@@ -1,7 +1,9 @@
 import React from 'react';
 import axios from 'axios';
+import { FaPlusCircle } from 'react-icons/fa';
 import { GoTrashcan } from 'react-icons/go';
 import ListItem from './ListItem';
+import Header from './Header';
 
 export default class List extends React.Component {
     constructor(props) {
@@ -60,13 +62,13 @@ export default class List extends React.Component {
             return (
                 <div className="list__box" key={id}>
                     <div className="list__box--header">
-                        <h4 style={{marginLeft: '1em'}}>{name}</h4>
-                        <h4 
-                        onClick={(e) => { this.handleRemoveList(e, id) }}
-                        style={{marginRight: '0.7em'}}><GoTrashcan /></h4>
+                        <h4 style={{ marginLeft: '1em' }}>{name}</h4>
+                        <h4
+                            onClick={(e) => { this.handleRemoveList(e, id) }}
+                            style={{ marginRight: '0.7em' }}><GoTrashcan /></h4>
                     </div>
                     <div className="list__items">
-                        <ListItem id={id} data={this.state.data}/>
+                        <ListItem id={id} data={this.state.data} />
                     </div>
                 </div>
             )
@@ -75,28 +77,33 @@ export default class List extends React.Component {
 
     render() {
         return (
-            <div className="list__container">
-                {this.renderLists()}
-                
-                <div className='list__create'>
-                    <div className='list__create--input-div'>
-                        <input 
-                        type='text' 
-                        value={this.state.name} 
-                        onChange={this.onChange} 
-                        placeholder='New List' 
-                        minLength='3' maxLength='40'
-                        />
+            <>
+                <Header data={this.state.data} />
+                <div className="list__container">
+                    {this.renderLists()}
+
+                    <div className='list__create'>
+                        <form onSubmit={(e) => { this.handleNewList(e) }}>
+                            <div className='list__create--input-div'>
+                                <input
+                                    type='text'
+                                    value={this.state.name}
+                                    onChange={this.onChange}
+                                    placeholder='Create New List'
+                                    minLength='3' maxLength='15'
+                                />
+                            </div>
+
+                            <div className='list__create--btn-div'>
+                                <button className='list__create--btn'>
+                                <FaPlusCircle style={{ color: '#60AEBF', fontSize: '1.4em', padding: '0 2%' }} />
+                                </button>
+                            </div>
+                        </form>
                     </div>
 
-                    <div className='list__create--btn-div'>
-                        <button onClick={(e) => { this.handleNewList(e) }}>
-                            Add
-                        </button>
-                    </div>
                 </div>
-
-            </div>
+            </>
         )
     }
 

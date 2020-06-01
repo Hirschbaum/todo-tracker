@@ -19,14 +19,12 @@ export default class ListItem extends React.Component {
             id: '',
             showEdit: '',
             showMove: '',
-            /*newId: '',*/
         }
     }
 
     componentDidMount() {
         axios.get('/list/:id/item')
             .then(res => {
-                //console.log('ITEMS', res.data);
                 this.setState({ itemData: res.data })
             })
             .catch(err => {
@@ -41,10 +39,6 @@ export default class ListItem extends React.Component {
     handleMoveModal = (item_id) => {
         this.setState({ showMove: item_id });
     }
-
-    /*handleNewListId = (e) => {
-        this.setState({ newId: e.target.value })
-    }*/
 
     handleNewItem = (e) => {
         e.preventDefault();
@@ -113,19 +107,20 @@ export default class ListItem extends React.Component {
                             </button>
                             {this.state.showMove === item_id ?
                                 <ModalMove
+                                    data={this.props.data}
                                     handleMoveModal={this.handleMoveModal}
                                     id={id}
                                     itemId={item_id}
                                     itemName={item_name}
-                                    data={this.props.data}
-                                    /*newId={this.state.newId}
-                                    handleNewListId={this.handleNewListId}*/
                                     renderListNames={this.renderListNames}
                                 />
                                 : null}
 
                             <button onClick={(e) => { this.handleRemoveItem(e, item_id) }}
-                                className='item__cards--button'><GoTrashcan style={{ color: '#60AEBF' }} /></button>
+                                className='item__cards--button'
+                            >
+                                    <GoTrashcan style={{ color: '#60AEBF' }} />
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -148,7 +143,6 @@ export default class ListItem extends React.Component {
                             minLength='3' maxLength='40'
                             placeholder='Add New Card' />
                         <button
-                            onSubmit={(e) => { this.handleNewItem(e) }}
                             className='item__create--button'
                         >
                             <FaPlusCircle style={{ color: '#60AEBF', fontSize: '1.4em', padding: '0 2%' }} />

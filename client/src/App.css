@@ -11,26 +11,26 @@ light grey: #F2F2F2
   font-family: 'Roboto Condensed', sans-serif;
 }
 
-header {
-  background-color: #1D4B73;
-  color: #F2F2F2;
-  max-width: 2500px;
-  height: 19vh;
-  margin: 0 0 1% 0;
+header h1 {
+  margin: 0 0 1% 1%;
+  padding-top: 0.5em;
 }
 
-header h1, header p {
-  margin: 0 0 1% 1%;
+.header__text {
+  line-height: 1.1em;
+  margin-top: 1em;
+  margin-left: 1em;
 }
 
 .list__container {
   display: flex;
+  flex-wrap: wrap;
   flex-direction: row;
 }
 
 .list__box {
   box-sizing: border-box;
-  width: 200px;
+  width: 12.5em;
   border: 1px solid #CEDEDE;
   border-radius: 0.3rem;
   background-color: #CEDEDE;
@@ -52,39 +52,55 @@ header h1, header p {
   cursor: pointer;
 }
 
+/*--------------------- LISTS - create new list ----------------*/
 .list__create {
   position: relative;
   display: flex;
-  width: 200px;
   box-sizing: border-box;
   justify-content: center;
+  background-color: #CEDEDE;
+  width: 12.5em;
+  height: 4em;
+  border-radius: 0.3em;
+  margin: 1rem;
 }
 
 .list__create--input-div {
   box-sizing: border-box;
-  width: 130px;
+  width: 8em;
   position: absolute;
-  top: 30px;
-  left: 0;
+  top: 1em;
+  left: 0.7em;
 }
 
 .list__create--btn-div {
   box-sizing: border-box;
   position: absolute;
-  top: 30px;
-  left: 140px;
+  top: 1.1em;
+  left: 9.5em;
 }
 
 .list__create--input-div input[type='text'] {
   padding: 3%;
-  border-top-left-radius: 0.3rem;
-  border-bottom-left-radius: 0.3rem;
+  background-color: #CEDEDE;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 1px solid #60AEBF;
+  width: 10em;
 }
 
-.list__create--btn-div button {
-  padding: 3%;
+.list__create--btn {
+  padding: 4%;
   border-top-right-radius: 0.3rem;
   border-bottom-right-radius: 0.3rem;
+  background-color: #CEDEDE;
+  width: 2em;
+  border: none;
+}
+
+.list__create--btn:hover {
+  cursor: pointer;
 }
 
 /*--------------------- CARDS -items on the lists ----------------*/
@@ -237,17 +253,6 @@ header h1, header p {
     transform: translate(-50%, -50%);
 }
 
-.errorMessages > p {
-    margin: 0;
-    color: #737373;
-}
-
-.rename-error{
-    color: red;
-    padding-top: 10px;
-    font-size: 0.7rem;
-}
-
 .modalsButtonsContainer {
     display: flex;
     justify-content: flex-end;
@@ -265,7 +270,7 @@ header h1, header p {
     font-size: 11px;
 }
 
-/*---the Create and the Delete buttons on the portals---*/
+/*---the Move and the Except buttons on the portals---*/
 .blueButtons {
     color: #fff;
     background-color: #1D4B73;
@@ -283,6 +288,10 @@ header h1, header p {
     color: #1B3C59;
 }
 
+select {
+  margin-left: 0.5em;
+  padding: 0.1em;
+}
 
 @media only screen and (max-width: 580px) {
     .modalBox {
@@ -315,4 +324,13 @@ header h1, header p {
         height: 30px;
         padding-left: 5px;
     }
+}
+
+footer {
+  position: absolute;
+  bottom: 0.5em;
+  left: 42vw;
+  font-size: 0.7em;
+  color: #1B3C59;
+  letter-spacing: 0.15em;
 }

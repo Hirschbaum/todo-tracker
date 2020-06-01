@@ -1,14 +1,35 @@
 import React from 'react';
 
-export default function Header() {
+export default function Header(props) {
+
+    const shortHeaderStyle = {
+        backgroundColor: '#1D4B73',
+        color: '#F2F2F2',
+        maxWidth: '2000px',
+        height: '8vh',
+        margin: '0 0 1% 0',
+        paddingLeft: '1em',
+    }
+
+    const longHeaderStyle = {
+        backgroundColor: '#1D4B73',
+        color: '#F2F2F2',
+        maxWidth: '2500px',
+        height: '19vh',
+        margin: '0 0 1% 0',
+        paddingLeft: '1em',
+    }
+
     return (
-        <header>
+        <header style={props.data ? shortHeaderStyle : longHeaderStyle}>
             <h1>todo tracker</h1>
-            <p>Welcome to todo tracker!</p>
-            <p>Here can you create your todo/project lists and follow the whole process, from start to the end.
-            You can add new list items to each list. You can edit, move and delete your list items.
-          And of course you can also create new lists.</p>
-            <p>First create a new list.</p>
+            {!props.data ?
+                <div className="header__text">
+                    <p>Here can you create your todo lists and follow the whole process, from start to the end.</p>
+                    <p>You can add new cards to each list. You can edit, move and delete your cards.</p>
+                    <p>To begin, create a new list.</p>
+                </div>
+                : null}
         </header>
     )
 }

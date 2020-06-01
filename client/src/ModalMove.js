@@ -34,7 +34,7 @@ const ModalMove = (props) => {
         return props.data.map(list => {
             const { name, id } = list;
             return (
-                <option value={id} key={id}> {name} </option> //need this value as newId
+                <option value={id} key={id}> {name} </option> //this value as newId
             )
         })
     }
@@ -57,10 +57,11 @@ const ModalMove = (props) => {
 				    </label>
 
                     <select 
-                    value={id}
-                    onChange={onChangeListId}
-                    name="moveCard" id="moveCard" required>
-                        <option value='default_option'>Click one option below</option>
+                        value={id}
+                        onChange={onChangeListId}
+                        name="moveCard" id="moveCard" required
+                    >
+                        <option value='default_option'>Choose...</option>
                         {renderListNames(props)}
                     </select>
 
