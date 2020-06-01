@@ -19,7 +19,7 @@ export default class ListItem extends React.Component {
             id: '',
             showEdit: '',
             showMove: '',
-            newId: '',
+            /*newId: '',*/
         }
     }
 
@@ -42,9 +42,9 @@ export default class ListItem extends React.Component {
         this.setState({ showMove: item_id });
     }
 
-    handleNewListId = (e) => {
+    /*handleNewListId = (e) => {
         this.setState({ newId: e.target.value })
-    }
+    }*/
 
     handleNewItem = (e) => {
         e.preventDefault();
@@ -116,9 +116,10 @@ export default class ListItem extends React.Component {
                                     handleMoveModal={this.handleMoveModal}
                                     id={id}
                                     itemId={item_id}
+                                    itemName={item_name}
                                     data={this.props.data}
-                                    newId={this.state.newId}
-                                    /*handleNewListId={this.handleNewListId}*/
+                                    /*newId={this.state.newId}
+                                    handleNewListId={this.handleNewListId}*/
                                     renderListNames={this.renderListNames}
                                 />
                                 : null}
@@ -132,14 +133,7 @@ export default class ListItem extends React.Component {
         })
     }
 
-    renderListNames = (props) => {
-        return props.data.map(list => {
-            const { name, id } = list;
-            return (
-                <option value={id}> {name} </option>
-            )
-        })
-    }
+
     render() {
         console.log('ListItem', this.props.data)
         return (

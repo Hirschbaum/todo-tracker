@@ -173,23 +173,23 @@ listRouter.patch('/:id/item/:itemId', (req, res) => {
 //-----------------MOVE ITEMS:  route:  /list/:id/item/:itemId/move/-----------------------
 //---------------------------to change list id to one item -------------------------------------
 
-//curl -XPATCH localhost:8090/list/test-123-test-456/item/6970118b-197d-4fe9-8a5c-62f4840ec108/move -H 'Content-Type: application/json' -d '{"id": "8cfd594e-f2c5-4702-a9e3-22b5e6537f15"}' -v - WORKING
-listRouter.patch('/:id/item/:itemId/move', (req, res) => {
+//curl -XPATCH localhost:8090/list/test-123-test-456/item/6970118b-197d-4fe9-8a5c-62f4840ec108/move -H 'Content-Type: application/json' -d '{"newId": "8cfd594e-f2c5-4702-a9e3-22b5e6537f15"}' -v - WORKING
+listRouter.patch('/:listId/item/:itemId/move', (req, res) => {
 
-    let id = req.params.id;
+    let listId = req.params.listId;
     let itemId = req.params.itemId;
     let newId = req.body.newId;
 
-    if (!id && !itemId) {
+    if (!listId && !itemId) {
         res.status(400).end();
         return;
     }
 
-    console.log(id, itemId);
+    console.log(listId, itemId, newId);
     let index = ITEM_DB_PATH.findIndex(item => { return item.item_id === itemId });
     let moveItem = ITEM_DB_PATH[index];
 
-    ITEM_DB_PATH[index] = Object.assign( moveItem, { "id": id });
+    ITEM_DB_PATH[index] = Object.assign( moveItem, { "id": newId });
 
     fs.writeFile('./itemDb.json', JSON.stringify(ITEM_DB_PATH), (err, data) => {
         if (err) {

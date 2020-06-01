@@ -4,28 +4,24 @@ import axios from 'axios';
 
 const ModalMove = (props) => {
 
-    const [newId, update] = useState(props.newId);
+    const [id, update] = useState('');
 
-    const onChangeListId = (e) => {
-        update(e.target.value);
+    const onChangeListId = () => {
+        update(id);
     }
 
     const cancelMoveModal = (str) => {
         props.handleMoveModal();
     }
 
-    /*const renderListNames = () => {
-        props.renderListNames();
-    }*/
-
     const moveItem = (e) => {
         e.preventDefault();
-        console.log(props.arams.match.id, props.itemId, props.newId)
-        let id = props.id;
+        let listId = props.id;
         let itemId = props.itemId;
-        axios.patch(`/list/${id}/item/${itemId}/move`, { id: props.newId })
+        console.log(props.id, props.itemId, id)
+        axios.patch(`/list/${listId}/item/${itemId}/move`, { newId: id })
             .then(res => {
-                console.log('MOVEING THIS CARD', res);
+                console.log('MOVING THIS CARD', res);
                 window.location.reload();
                 cancelMoveModal('');
             })
@@ -34,12 +30,11 @@ const ModalMove = (props) => {
             })
     }
 
-
    const renderListNames = (props) => {
         return props.data.map(list => {
             const { name, id } = list;
             return (
-                <option value={id}> {name} </option>
+                <option value={id} key={id}> {name} </option> //need this value as newId
             )
         })
     }
@@ -58,14 +53,14 @@ const ModalMove = (props) => {
                         htmlFor='moveCard'
                         style={{ textAlign: 'left', fontSize: '12px', marginBottom: '3px', marginTop: '10px' }}
                     >
-                        Move this card to this list:
+                        Move <span style={{color: '#1D4B73', fontWeight: '700'}}>{props.itemName} </span> card to this list: 
 				    </label>
 
                     <select 
-                    value={newId}
+                    value={id}
                     onChange={onChangeListId}
                     name="moveCard" id="moveCard" required>
-                        {renderListNames()}
+                        {renderListNames(props)}
                     </select>
 
                     <div className='modalsButtonsContainer'>
