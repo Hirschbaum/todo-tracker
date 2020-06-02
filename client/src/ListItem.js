@@ -14,6 +14,7 @@ export default class ListItem extends React.Component {
 
         this.state = {
             description: '',
+            errorMsg: false,
             itemData: [],
             itemName: '',
             id: '',
@@ -44,12 +45,14 @@ export default class ListItem extends React.Component {
         e.preventDefault();
         axios.post('/list/:id/item', { itemName: this.state.itemName, id: this.props.id })
             .then(res => {
-                console.log('POSTING NEW ITEM', res);
+                //console.log('POSTING NEW ITEM', res);
                 this.setState({ itemData: [...this.state.itemData, res.data.newItem] });
                 this.setState({ itemName: '' });
+                this.setState({ errorMsg: false });
             })
             .catch(err => {
                 console.log('Error by posting new item', err);
+                this.setState({ errorMsg: true });
             })
     }
 
@@ -57,7 +60,7 @@ export default class ListItem extends React.Component {
         e.preventDefault();
         axios.delete('/list/:id/item/' + itemId)
             .then(res => {
-                console.log('Item to REMOVE', res);
+                //console.log('Item to REMOVE', res);
                 this.setState({ itemData: this.state.itemData.filter(x => itemId !== x.item_id) });
             })
             .catch(err => {
@@ -90,12 +93,12 @@ export default class ListItem extends React.Component {
                             </button>
                             {this.state.showEdit === item_id ?
                                 <ModalEdit
-                                    handleEditModal={this.handleEditModal}
-                                    itemName={item_name}
                                     description={description}
-                                    timeStamp={time_stamp}
-                                    itemId={item_id}
+                                    handleEditModal={this.handleEditModal}
                                     id={id}
+                                    itemId={item_id}
+                                    itemName={item_name}
+                                    timeStamp={time_stamp}
                                 />
                                 : null}
 
@@ -119,7 +122,7 @@ export default class ListItem extends React.Component {
                             <button onClick={(e) => { this.handleRemoveItem(e, item_id) }}
                                 className='item__cards--button'
                             >
-                                    <GoTrashcan style={{ color: '#60AEBF' }} />
+                                <GoTrashcan style={{ color: '#60AEBF' }} />
                             </button>
                         </div>
                     </div>
@@ -130,6 +133,14 @@ export default class ListItem extends React.Component {
 
 
     render() {
+
+        let errorMsgStyle = {
+            color: 'indianred',
+            marginLeft: '0.7em',
+            marginRight: '0.7em',
+            fontSize: '0.8em',
+        }
+
         return (
             <div>
                 {this.renderItems()}
@@ -137,11 +148,13 @@ export default class ListItem extends React.Component {
                 <div className='item__create'>
                     <form onSubmit={(e) => { this.handleNewItem(e) }}>
                         <input
-                            type='text' className='item__create--input'
-                            value={this.state.itemName}
-                            onChange={this.onChange}
+                            className='item__create--input'
                             minLength='3' maxLength='40'
-                            placeholder='Add New Card' />
+                            onChange={this.onChange}
+                            placeholder={this.state.errorMsg ? 'Oh, try again!' : 'Create New Card'}
+                            type='text'
+                            value={this.state.itemName}
+                        />
                         <button
                             className='item__create--button'
                         >
@@ -149,6 +162,7 @@ export default class ListItem extends React.Component {
                         </button>
                     </form>
                 </div>
+                {this.state.errorMsg ? <p style={errorMsgStyle}>The card title should be at least three charachters long.</p> : null}
             </div>
         )
     }

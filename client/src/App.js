@@ -3,7 +3,6 @@ import './App.css';
 import List from './List';
 import Footer from './Footer';
 
-
 export default class App extends React.Component {
 
   render() {

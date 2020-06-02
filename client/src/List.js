@@ -12,6 +12,7 @@ export default class List extends React.Component {
         this.state = {
             data: [],
             name: '',
+            showErrorMsg: false,
         }
 
     }
@@ -31,12 +32,14 @@ export default class List extends React.Component {
         e.preventDefault();
         axios.post('/list', { name: this.state.name })
             .then(res => {
-                console.log('GOT RESPONSE POSTING NEW LIST', res);
+                //console.log('GOT RESPONSE POSTING NEW LIST', res);
                 this.setState({ data: [...this.state.data, res.data.newList] });
                 this.setState({ name: '' });
+                this.setState({ showErrorMsg: false });
             })
             .catch(err => {
                 console.log('Error by posting new list', err);
+                this.setState({ showErrorMsg: true });
             })
     }
 
@@ -44,7 +47,7 @@ export default class List extends React.Component {
         e.preventDefault();
         axios.delete('/list/' + id)
             .then(res => {
-                console.log('List to REMOVE', res);
+                //console.log('List to REMOVE', res);
                 this.setState({ data: this.state.data.filter(x => id !== x.id) });
             })
             .catch(err => {
@@ -65,7 +68,10 @@ export default class List extends React.Component {
                         <h4 style={{ marginLeft: '1em' }}>{name}</h4>
                         <h4
                             onClick={(e) => { this.handleRemoveList(e, id) }}
-                            style={{ marginRight: '0.7em' }}><GoTrashcan /></h4>
+                            style={{ marginRight: '0.7em' }}
+                        >
+                            <GoTrashcan />
+                        </h4>
                     </div>
                     <div className="list__items">
                         <ListItem id={id} data={this.state.data} />
@@ -76,9 +82,11 @@ export default class List extends React.Component {
     }
 
     render() {
+
         return (
             <>
                 <Header data={this.state.data} />
+
                 <div className="list__container">
                     {this.renderLists()}
 
@@ -86,20 +94,22 @@ export default class List extends React.Component {
                         <form onSubmit={(e) => { this.handleNewList(e) }}>
                             <div className='list__create--input-div'>
                                 <input
+                                    maxLength='15'
+                                    minLength='3'
+                                    onChange={this.onChange}
+                                    placeholder={this.state.showErrorMsg ? 'Ups, try again!' : 'Create New List'}
                                     type='text'
                                     value={this.state.name}
-                                    onChange={this.onChange}
-                                    placeholder='Create New List'
-                                    minLength='3' maxLength='15'
                                 />
                             </div>
 
                             <div className='list__create--btn-div'>
                                 <button className='list__create--btn'>
-                                <FaPlusCircle style={{ color: '#60AEBF', fontSize: '1.4em', padding: '0 2%' }} />
+                                    <FaPlusCircle style={{ color: '#60AEBF', fontSize: '1.4em', padding: '0 2%' }} />
                                 </button>
                             </div>
                         </form>
+
                     </div>
 
                 </div>

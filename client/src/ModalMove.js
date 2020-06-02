@@ -18,10 +18,10 @@ const ModalMove = (props) => {
         e.preventDefault();
         let listId = props.id;
         let itemId = props.itemId;
-        console.log(props.id, props.itemId, id)
+        //console.log(props.id, props.itemId)
         axios.patch(`/list/${listId}/item/${itemId}/move`, { newId: id })
             .then(res => {
-                console.log('MOVING THIS CARD', res);
+                //console.log('MOVING THIS CARD', res);
                 window.location.reload();
                 cancelMoveModal('');
             })
@@ -61,6 +61,7 @@ const ModalMove = (props) => {
                         onChange={onChangeListId}
                         name="moveCard" id="moveCard" required
                     >
+                        <option value="default_option">--Choose--</option>
                         {renderListNames(props)}
                     </select>
 

@@ -21,13 +21,13 @@ export default function Header(props) {
     }
 
     return (
-        <header style={props.data ? shortHeaderStyle : longHeaderStyle}>
+        <header style={props.data.length === 0 ? longHeaderStyle : shortHeaderStyle}>
             <h1>todo tracker</h1>
-            {!props.data ?
+            {props.data.length === 0  ?
                 <div className="header__text">
-                    <p>Here can you create your todo lists and follow the whole process, from start to the end.</p>
+                    <p>Here can you create your todo lists.</p>
                     <p>You can add new cards to each list. You can edit, move and delete your cards.</p>
-                    <p>To begin, create a new list.</p>
+                    <p>To begin with create a new list.</p>
                 </div>
                 : null}
         </header>

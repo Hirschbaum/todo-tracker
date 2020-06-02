@@ -7,10 +7,10 @@ const uuid = require('uuid');
 let DB_PATH = require('./db.json');
 let ITEM_DB_PATH = require('./itemDb.json');
 
-//------------   json parser middelware   ------------------------
+//------------   json parser middleware   ------------------------
 app.use((req, res, next) => {
     if (req.is('json')) { //check, if requests content-type is application/json, there are others like application/xml
-        console.log('MIDDLEWARE IS WORKING');
+        console.log('req is a json');
         let data = '';
         req.on('data', chunk => { //the data comes in chunks, so-called packets, make them to strings, and add it to data
             data += chunk.toString();
@@ -19,6 +19,7 @@ app.use((req, res, next) => {
         req.on('end', (err, d) => { //when the request ended
             if (err) { //check, if there is an error
                 res.status(400).end();
+                return;
             } else {
                 data = JSON.parse(data); //if not, parse the chunks into the data variabel
                 req.body = data; 
@@ -30,7 +31,7 @@ app.use((req, res, next) => {
     }
 });
 
-//------------------  request logging middelware  -------------------
+//------------------  request logging middleware  -------------------
 app.use((req, res, next) => {
     let reqStarted = Date.now();
     res.once('finish', () => {
@@ -71,6 +72,7 @@ listRouter.post('/', (req, res) => {
     let name = req.body.name;
     if (!name) {
         res.status(400).end();
+        return;
     }
 
     let newList = {
