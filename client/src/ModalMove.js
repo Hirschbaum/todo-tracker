@@ -41,8 +41,6 @@ const ModalMove = (props) => {
         })
     }
 
-
-
     return ReactDOM.createPortal(
         <div className='modalContainer'>
             <div className='modalBox'>

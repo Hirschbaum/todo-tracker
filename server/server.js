@@ -4,13 +4,33 @@ const app = express();
 const fs = require('fs');
 const uuid = require('uuid');
 
-
 let DB_PATH = require('./db.json');
 let ITEM_DB_PATH = require('./itemDb.json');
 
-app.use(express.json());
+//------------   json parser middelware   ------------------------
+app.use((req, res, next) => {
+    if (req.is('json')) { //check, if requests content-type is application/json, there are others like application/xml
+        console.log('MIDDLEWARE IS WORKING');
+        let data = '';
+        req.on('data', chunk => { //the data comes in chunks, so-called packets, make them to strings, and add it to data
+            data += chunk.toString();
+        });
 
-//----------------------------------------------------------------
+        req.on('end', (err, d) => { //when the request ended
+            if (err) { //check, if there is an error
+                res.status(400).end();
+            } else {
+                data = JSON.parse(data); //if not, parse the chunks into the data variabel
+                req.body = data; 
+                next(); //go to next route handler
+            }
+        });
+    } else { //if content-type is not json, go to next route handler
+        next();
+    }
+});
+
+//------------------  request logging middelware  -------------------
 app.use((req, res, next) => {
     let reqStarted = Date.now();
     res.once('finish', () => {
@@ -26,7 +46,7 @@ app.use((req, res, next) => {
 //------------------------------------------------------------------
 const listRouter = express.Router();
 
-//curl localhost:8090/list - WORKING! get all lists
+//curl localhost:8090/list - get all lists
 listRouter.get('/', (req, res) => {
     fs.readFile('db.json', (err, data) => {
         if (err) {
@@ -36,7 +56,7 @@ listRouter.get('/', (req, res) => {
     })
 });
 
-//curl -XGET localhost:8090/list/7c111fe8-faf9-467c-8656-3934e5540cd6    - WORKING! get specific list
+//curl -XGET localhost:8090/list/7c111fe8-faf9-467c-8656-3934e5540cd6    - get specific list
 listRouter.get('/:id', (req, res) => {
     let targetedList = DB_PATH.find(list => list.id === req.params.id);
     if (!targetedList) {
@@ -46,7 +66,7 @@ listRouter.get('/:id', (req, res) => {
     res.status(200).json(targetedList);
 });
 
-//curl -XPOST localhost:8090/list -H 'Content-Type: application/json' -d '{"name": "planing"}' -v  - WORKING! post new list
+//curl -XPOST localhost:8090/list -H 'Content-Type: application/json' -d '{"name": "planing"}' -v       - post new list
 listRouter.post('/', (req, res) => {
     let name = req.body.name;
     if (!name) {
@@ -56,7 +76,6 @@ listRouter.post('/', (req, res) => {
     let newList = {
         "name": name,
         "id": uuid.v4(),
-        //"listitems": [],
     }
 
     console.log(newList.name, newList.id);
@@ -72,7 +91,7 @@ listRouter.post('/', (req, res) => {
     })
 });
 
-//curl -XDELETE localhost:8090/list/7c111fe8-faf9-467c-8656-3934e5540cd6 -v   WORKING - to delete specific list
+//curl -XDELETE localhost:8090/list/7c111fe8-faf9-467c-8656-3934e5540cd6 -v       - to delete specific list
 listRouter.delete('/:id', (req, res) => {
     DB_PATH = DB_PATH.filter(list => { return list.id !== req.params.id });
 
@@ -82,10 +101,10 @@ listRouter.delete('/:id', (req, res) => {
     })
 });
 
-//-----------------LIST ITEMS:  route:  /list-----------------------
-//------------------------------------------------------------------
+//-----------------LIST ITEMS:  route:  /list/:id/item-----------------------
+//---------------------------------------------------------------------------
 
-//curl -XGET localhost:8090/list/bd387f5e-5e26-4a9d-aec5-d6483e9c8740/item -v    WORKING - to get all the items
+//curl -XGET localhost:8090/list/bd387f5e-5e26-4a9d-aec5-d6483e9c8740/item -v        - to get all the items
 listRouter.get('/:id/item', (req, res) => {
     fs.readFile('itemDb.json', (err, data) => {
         if (err) {
@@ -96,7 +115,7 @@ listRouter.get('/:id/item', (req, res) => {
     })
 })
 
-//curl -XPOST localhost:8090/list/bd387f5e-5e26-4a9d-aec5-d6483e9c8740/item -H 'Content-Type: application/json' -d '{"itemName": "keep coding", "id": "bd387f5e-5e26-4a9d-aec5-d6483e9c8740"}' -v    // Working
+//curl -XPOST localhost:8090/list/bd387f5e-5e26-4a9d-aec5-d6483e9c8740/item -H 'Content-Type: application/json' -d '{"itemName": "keep coding", "id": "bd387f5e-5e26-4a9d-aec5-d6483e9c8740"}' -v    
 listRouter.post('/:id/item', (req, res) => {
     let id = req.body.id; //it should be the id of the list!
     let itemName = req.body.itemName;
@@ -173,7 +192,7 @@ listRouter.patch('/:id/item/:itemId', (req, res) => {
 //-----------------MOVE ITEMS:  route:  /list/:id/item/:itemId/move/-----------------------
 //---------------------------to change list id to one item -------------------------------------
 
-//curl -XPATCH localhost:8090/list/test-123-test-456/item/6970118b-197d-4fe9-8a5c-62f4840ec108/move -H 'Content-Type: application/json' -d '{"newId": "8cfd594e-f2c5-4702-a9e3-22b5e6537f15"}' -v - WORKING
+//curl -XPATCH localhost:8090/list/test-123-test-456/item/6970118b-197d-4fe9-8a5c-62f4840ec108/move -H 'Content-Type: application/json' -d '{"newId": "8cfd594e-f2c5-4702-a9e3-22b5e6537f15"}' -v 
 listRouter.patch('/:listId/item/:itemId/move', (req, res) => {
 
     let listId = req.params.listId;
@@ -189,7 +208,7 @@ listRouter.patch('/:listId/item/:itemId/move', (req, res) => {
     let index = ITEM_DB_PATH.findIndex(item => { return item.item_id === itemId });
     let moveItem = ITEM_DB_PATH[index];
 
-    ITEM_DB_PATH[index] = Object.assign( moveItem, { "id": newId });
+    ITEM_DB_PATH[index] = Object.assign(moveItem, { "id": newId });
 
     fs.writeFile('./itemDb.json', JSON.stringify(ITEM_DB_PATH), (err, data) => {
         if (err) {
