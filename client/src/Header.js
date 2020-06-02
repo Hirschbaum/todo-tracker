@@ -15,9 +15,10 @@ export default function Header(props) {
         backgroundColor: '#1D4B73',
         color: '#F2F2F2',
         maxWidth: '2500px',
-        height: '19vh',
+        height: '21vh',
         margin: '0 0 1% 0',
         paddingLeft: '1em',
+        lineHeight: '1.2em',
     }
 
     return (

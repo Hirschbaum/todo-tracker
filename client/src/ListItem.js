@@ -158,7 +158,7 @@ export default class ListItem extends React.Component {
                         <button
                             className='item__create--button'
                         >
-                            <FaPlusCircle style={{ color: '#60AEBF', fontSize: '1.4em', padding: '0 2%' }} />
+                            <FaPlusCircle style={{ color: '#60AEBF', fontSize: '1.4em' }} />
                         </button>
                     </form>
                 </div>
